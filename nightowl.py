@@ -202,8 +202,8 @@ def get_commit_date(commit_hash):
 
 def check_for_remote_changes():
     try:
-        # Fetch the latest remote changes without merging them
-        cmd = ['git', 'fetch', 'origin', f'{PARENT_BRANCH}:{PARENT_BRANCH}']
+        # Fetch the latest remote changes for the PARENT_BRANCH without merging them
+        cmd = ['git', 'fetch', 'origin', PARENT_BRANCH]
         env = os.environ.copy()
         env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
         result = subprocess.run(cmd, capture_output=True, text=True, env=env)
