@@ -3,11 +3,9 @@
 *.env
 *.log
 *.json
+*.installed
 
 !last_processed_commit.json
-
-sshkey/*
-!sshkey/.keep
 
 !nightly/*.log
 

@@ -8,6 +8,7 @@ import json
 import time
 import sys
 import platform
+import requests
 import logging
 
 ############################
@@ -22,11 +23,11 @@ import logging
 # ---------- CONFIG SETUP ----------
 
 ENV_FILE = "nightowl.env"
+GITHUB_API_URL = "https://api.github.com"
 
 # Template .env if missing
 default_env = """# Configuration
-SSH_USER=git
-SSH_KEY=placeholder
+GITHUB_TOKEN=placeholder
 PRIVATE_REPO_OWNER=placeholder
 PRIVATE_REPO_NAME=placeholder
 PRIVATE_BRANCH=placeholder
@@ -50,14 +51,11 @@ with open(ENV_FILE, 'r') as f:
 
 load_dotenv(dotenv_path=ENV_FILE)
 
-SSH_USER = env_vars['SSH_USER']
-SSH_KEY_PATH = env_vars['SSH_KEY']
+GITHUB_TOKEN = env_vars['GITHUB_TOKEN']
 PRIVATE_REPO_OWNER = env_vars['PRIVATE_REPO_OWNER']
 PRIVATE_REPO_NAME = env_vars['PRIVATE_REPO_NAME']
 PRIVATE_BRANCH = env_vars['PRIVATE_BRANCH']
 PARENT_BRANCH = env_vars['PARENT_BRANCH']
-
-PRIVATE_REPO_URL = f"git@github.com:{PRIVATE_REPO_OWNER}/{PRIVATE_REPO_NAME}.git"
 
 # ---------- CHECK FOR PLACEHOLDERS IN .ENV ----------
 
@@ -136,9 +134,8 @@ else:
 # ---------- FUNCTION: CHECK IF PACKAGE IS INSTALLED ----------
 
 def is_package_installed(package):
-    """Check if a package is installed."""
     try:
-        subprocess.check_output([sys.executable, "-m", "pip", "show", package], stderr=subprocess.STDOUT)
+        subprocess.check_output([sys.executable, "-m", "pip", "show", package])
         return True  # Package is installed
     except subprocess.CalledProcessError:
         return False  # Package is not installed
@@ -189,58 +186,24 @@ def install_requirements():
         print("Error: requirements.txt not found. Please ensure the file exists.")
         exit(1)
 
-# ---------- FUNCTION: INITIALIZE SSH AGENT ----------
-
-def initialize_sshagent():
-    """Starts the SSH agent and adds the key based on the platform (Windows or Unix)."""
-    load_dotenv()
-    SSH_KEY = os.getenv("SSH_KEY")  # This will retrieve the value from the .env file
-
-    if not SSH_KEY:
-        print("[ERROR] SSH_KEY not found in the .env file.")
-        exit(1)
-
-    if platform.system() == "Windows":
-        try:
-            # Path to your PowerShell script
-            PS_SCRIPT_PATH = os.path.abspath("lib/win/ssh_agent.ps1")
-
-            # Escape spaces in the file path by wrapping it in double quotes
-            PS_SCRIPT_PATH = f'"{PS_SCRIPT_PATH}"'
-            SSH_KEY = f'"{SSH_KEY}"'  # Make sure the SSH key path is also escaped
-
-            # Properly escape the spaces in the file path and pass to PowerShell
-            command = f'\"{PS_SCRIPT_PATH}\" -SSH_KEY_PATH \"{SSH_KEY}\"'
-
-            # Run the PowerShell script with elevated privileges
-            subprocess.run([
-                'powershell', 
-                '-ExecutionPolicy', 
-                'Bypass', 
-                '-Command', 
-                f'Start-Process powershell -ArgumentList "{command}" -Verb RunAs'
-            ], check=True)
-
-            print("[INFO] PowerShell script executed successfully.")
-
-        except subprocess.CalledProcessError as e:
-            print(f"[ERROR] Failed to run PowerShell script: {e}")
-            exit(1)
+def check_and_install_requirements():
+    # Check if the installation check file exists
+    if not os.path.exists('.installed'):
+        log_status("Installing required packages...")
+        install_requirements()
+        # After installation, create the .installed file
+        with open('.installed', 'w') as f:
+            f.write("Requirements installed.")
+        log_status("Requirements installed and .installed file created.")
     else:
-        # For Unix-like systems (Linux/macOS)
-        try:
-            print("[INFO] Detected Unix-based system. Adding SSH key to agent...")
+        log_status("Requirements already installed, skipping...")
 
-            # Start the SSH agent
-            subprocess.run(['ssh-agent', '-s'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+# ---------- FUNCTION: CLEAR PYCACHE ----------
 
-            # Add the SSH key to the agent
-            subprocess.run(['ssh-add', SSH_KEY], check=True)
-            print("[INFO] SSH key added to the agent successfully.")
-
-        except subprocess.CalledProcessError as e:
-            print(f"[ERROR] Error while adding SSH key to the agent: {e}")
-            exit(1)
+def clear_pycache():
+    for root, dirs, files in os.walk("."):
+        if "__pycache__" in dirs:
+            shutil.rmtree(os.path.join(root, "__pycache__"))
 
 # ---------- FUNCTION: CLONE PARENT REPO ----------
 
@@ -255,35 +218,62 @@ def clone_repos():
 
 # ---------- FUNCTION: GET COMMITS FROM PRIVATE REPO ----------
 
-def get_private_commits():
-    log_status(f"Fetching commits from private repository {PRIVATE_REPO_NAME} (branch: {PRIVATE_BRANCH})...")
+def get_latest_commits(PRIVATE_REPO_OWNER, PRIVATE_REPO_NAME, PRIVATE_BRANCH, GITHUB_TOKEN):
+    url = f"https://api.github.com/repos/{PRIVATE_REPO_OWNER}/{PRIVATE_REPO_NAME}/commits?sha={PRIVATE_BRANCH}"
+    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        try:
+            # Parse the JSON response
+            data = response.json()
+            
+            # Print the response to debug its structure
+            print(f"Response Data: {data}")
+            
+            if not data:
+                print("No commits found in the response.")
+                return None
+            
+            # Safely access the latest commit data
+            latest_commit = data[0]  # The first commit is the latest one
+            sha = latest_commit.get('sha', 'No SHA available')
+            message = latest_commit.get('commit', {}).get('message', 'No message available')
 
-    private_repo_url = f"git@github.com:{PRIVATE_REPO_OWNER}/{PRIVATE_REPO_NAME}.git"
-    cmd = ['git', 'ls-remote', '--refs', private_repo_url, f'refs/heads/{PRIVATE_BRANCH}']
-    env = os.environ.copy()
-    env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+            # Shorten commit hash to 7 characters
+            commit_data = {
+                'commit_hash': sha[:7],
+                'commit_message': message
+            }
 
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=10)
-    except subprocess.TimeoutExpired:
-        raise RuntimeError("Timeout: SSH connection to private repo took too long.")
-    except Exception as e:
-        raise RuntimeError(f"Failed to run git ls-remote: {str(e)}")
+            print(f"Latest Commit Data: {commit_data}")
+            return commit_data
 
-    if result.returncode != 0:
-        raise RuntimeError(f"Git ls-remote failed: {result.stderr.strip()}")
-
-    lines = result.stdout.strip().splitlines()
-    commits = [(line.split()[0], line.split()[1]) for line in lines]
-    log_status(f"Found {len(commits)} commits.")
-    return commits
+        except Exception as e:
+            print(f"Error processing commit data: {e}")
+            return None
+    else:
+        print(f"Error {response.status_code}: {response.text}")
+        return None
 
 # ---------- FUNCTION: FILTER AND PROCESS NEW COMMITS ----------
 
 def filter_and_process_commits(commits):
-    last_commit_hash = None
+    # Load the last processed commit hash from the file if it exists
+    try:
+        with open(last_processed_commit_file, 'r') as f:
+            last_commit_hash = json.load(f).get("commit_hash")
+    except FileNotFoundError:
+        last_commit_hash = None  # If the file doesn't exist, we haven't processed any commits yet
+    
     new_commits = []
+
     for commit_hash, commit_message in commits:
+        # Ensure the commit hash is limited to 7 characters
+        commit_hash = commit_hash[:7]
+
+        # If the commit is new (not the last processed one), process it
         if commit_hash != last_commit_hash:
             new_commits.append((commit_hash, commit_message))
             # Update last processed commit hash
@@ -297,42 +287,104 @@ def filter_and_process_commits(commits):
 
 # ---------- FUNCTION: SAVE COMMIT DATA ----------
 
-def save_commits(new_commits):
-    for commit_hash, commit_message in new_commits:
-        log_status(f"Processing commit: {commit_hash} - {commit_message}")
+def generate_random_hash(length=5):
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
 
-        # Write logs to the nightly folder
-        commit_message = commit_message.replace("\n", " ").strip()
-        log_filename = f"{commit_hash}.log"
+def get_commit_info(commit_hash):
+    # Get commit message
+    msg_cmd = ['git', 'show', '--no-patch', '--format=%s', commit_hash]
+    msg_proc = subprocess.run(msg_cmd, capture_output=True, text=True)
+    commit_msg = msg_proc.stdout.strip()
 
-        with open(f"nightly/{log_filename}", 'w') as f:
-            f.write(commit_message)
+    # Get commit date in MM.DD.YY format
+    date_cmd = ['git', 'show', '--no-patch', '--format=%cd', '--date=format:%m.%d.%y', commit_hash]
+    date_proc = subprocess.run(date_cmd, capture_output=True, text=True)
+    commit_date = date_proc.stdout.strip()
 
-        # Commit and push changes
-        subprocess.run(['git', 'add', '.'], check=True)
-        subprocess.run(['git', 'commit', '-m', f"Add commit log for {commit_hash}"], check=True)
-        subprocess.run(['git', 'push'], check=True)
+    return commit_msg, commit_date
+
+def save_commits(new_commits, parent_branch):
+    nightly_dir = os.path.join("tmp", "nightly")
+    os.makedirs(nightly_dir, exist_ok=True)
+
+    # Ensure we are on the correct branch
+    subprocess.run(['git', '-C', 'tmp', 'checkout', parent_branch], check=True)
+
+    for commit_hash in new_commits:
+        short_hash = commit_hash[:7]
+        rand_hash = generate_random_hash()
+        commit_msg, commit_date = get_commit_info(commit_hash)
+
+        filename = f"{commit_date}-{rand_hash}.log"
+        filepath = os.path.join(nightly_dir, filename)
+
+        # Write log contents
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(f"{short_hash} > {commit_msg}\n")
+
+        # Add the new log file
+        subprocess.run(["git", "-C", "tmp", "add", filepath], check=True)
+
+        # Commit and push with the correct commit message
+        subprocess.run(["git", "-C", "tmp", "commit", "-m", commit_msg], check=True)
+        subprocess.run(["git", "-C", "tmp", "push", "origin", parent_branch], check=True)
+
+# ---------- FUNCTION: FORCE REMOVES ----------
+
+def force_remove(path):
+    # Check if the path exists
+    if os.path.exists(path):
+        # If it's a directory, recurse and delete its contents
+        if os.path.isdir(path):
+            for root, dirs, files in os.walk(path, topdown=False):
+                for name in files:
+                    try:
+                        os.chmod(os.path.join(root, name), 0o777)  # Make the file writable
+                        os.remove(os.path.join(root, name))
+                    except Exception as e:
+                        print(f"Error removing file {name}: {e}")
+                for name in dirs:
+                    try:
+                        os.chmod(os.path.join(root, name), 0o777)  # Make the directory writable
+                        os.rmdir(os.path.join(root, name))
+                    except Exception as e:
+                        print(f"Error removing directory {name}: {e}")
+            # Now delete the main folder
+            try:
+                os.rmdir(path)
+            except Exception as e:
+                print(f"Error removing directory {path}: {e}")
+        else:
+            try:
+                os.remove(path)
+            except Exception as e:
+                print(f"Error removing file {path}: {e}")
 
 # ---------- INITIALIZES ----------
 
-log_status("Checking for package updates and requirements...")
-install_requirements()
+log_status("Clearing pycache...")
+clear_pycache()
 
-log_status("Initializing SSH agent...")
-initialize_sshagent()
+log_status("Checking for package updates and requirements...")
+check_and_install_requirements()
 
 # ---------- MAIN SCRIPT ----------
 
 if __name__ == '__main__':
     while True:
 
+        load_dotenv()
+
         # Step 1: Remove the tmp folder if it already exists
         tmp_dir = "tmp"
         log_status("Checking for pre-existing temporary folders...")
         if os.path.exists(tmp_dir):
             log_status(f"Temporary directory ({tmp_dir}) exists. Deleting it...")
-            shutil.rmtree(tmp_dir)
-            log_status(f"Temporary directory ({tmp_dir}) deleted.")
+            try:
+                force_remove(tmp_dir)
+                log_status(f"Temporary directory ({tmp_dir}) deleted.")
+            except Exception as e:
+                log_status(f"Failed to delete temporary directory ({tmp_dir}): {e}", level=logging.ERROR)
 
         # Step 2: Clone the parent repository
         log_status("Cloning parent repository into tmp...")
@@ -347,7 +399,7 @@ if __name__ == '__main__':
         # Step 3: Get commits from the private repo
         try:
             log_status("Getting private repo commits...")
-            commits = get_private_commits()
+            commit_data = get_latest_commits(PRIVATE_REPO_OWNER, PRIVATE_REPO_NAME, PRIVATE_BRANCH, GITHUB_TOKEN)
             log_status(f"Retrieved {len(commits)} commits.")
         except Exception as e:
             log_status(f"Error while retrieving commits: {e}", level=logging.ERROR)
@@ -362,9 +414,9 @@ if __name__ == '__main__':
         new_commits = filter_and_process_commits(commits)
 
         if new_commits:
-            # Step 5: Save commit data to files
+            # Step 5: Save commit data to files and push them
             log_status(f"Saving {len(new_commits)} new commits to files...")
-            save_commits(new_commits)
+            save_commits(new_commits, PARENT_BRANCH)
         else:
             log_status("No new commits to process.")
 
