@@ -6,6 +6,7 @@ from git import Repo
 from datetime import datetime
 import json
 import subprocess
+import tempfile
 import time
 import sys
 
@@ -161,7 +162,7 @@ def get_private_commits():
         PRIVATE_REPO_URL, f'refs/heads/{PRIVATE_BRANCH}'
     ]
     env = os.environ.copy()
-    env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
+    env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
     result = subprocess.run(cmd, capture_output=True, text=True, env=env)
     if result.returncode != 0:
         log_status(f"Error fetching commits: {result.stderr}")
@@ -176,7 +177,7 @@ def get_commit_date(commit_hash):
         'git', 'show', '-s', '--format=%ci', commit_hash
     ]
     env = os.environ.copy()
-    env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
+    env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
     result = subprocess.run(cmd, capture_output=True, text=True, env=env)
     if result.returncode != 0:
         log_status(f"Error fetching commit date: {result.stderr}")
@@ -191,7 +192,7 @@ def check_for_remote_changes():
         # Fetch the latest remote changes for the PARENT_BRANCH without merging them
         cmd = ['git', 'fetch', 'origin', PARENT_BRANCH]
         env = os.environ.copy()
-        env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
+        env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
         result = subprocess.run(cmd, capture_output=True, text=True, env=env)
         if result.returncode != 0:
             log_status(f"Error checking for remote changes: {result.stderr}")
@@ -211,6 +212,20 @@ parent_repo = Repo(parent_repo_path)
 
 while True:
     try:
+        # Create a temporary directory under tmp/
+        tmp_dir = os.path.join('tmp')
+        if os.path.exists(tmp_dir):
+            shutil.rmtree(tmp_dir)
+        os.makedirs(tmp_dir, exist_ok=True)
+
+        # Clone parent repo into tmp/
+        log_status(f"Cloning parent repository into {tmp_dir}...")
+        Repo.clone_from(parent_repo_path, tmp_dir, branch=PARENT_BRANCH)
+        cloned_repo = Repo(tmp_dir)
+
+        nightly_folder = os.path.join(tmp_dir, 'nightly')
+        os.makedirs(nightly_folder, exist_ok=True)
+
         commits = get_private_commits()
 
         new_commits = []
@@ -231,9 +246,9 @@ while True:
 
             # Check for remote changes before pulling
             if check_for_remote_changes():
-                # Always PULL before making any changes
-                origin = parent_repo.remote(name='origin')
-                log_status("Pulling latest changes from parent repo...")
+                # Always pull in the cloned repo
+                origin = cloned_repo.remote(name='origin')
+                log_status("Pulling latest changes into temp clone...")
                 origin.pull(refspec=f"{PARENT_BRANCH}:{PARENT_BRANCH}")
 
             for commit_hash in new_commits:
@@ -248,33 +263,24 @@ while True:
                     env = os.environ.copy()
                     env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
                     result = subprocess.run(cmd, capture_output=True, text=True, env=env)
-                    commit_message = result.stdout.strip() if result.returncode == 0 else 'No commit message available'
-                    
-                    with open(filepath, 'w') as f:
-                        f.write(f"{commit_hash} > {commit_message}")
-                    log_status(f"Created .log for {commit_hash}")
+                    commit_message = result.stdout.strip() if result.returncode == 0 else "No message"
 
-                # Record into database
-                cursor.execute('INSERT OR IGNORE INTO processed_commits (commit_hash) VALUES (?)', (commit_hash,))
-                conn.commit()
+                    with open(filepath, 'w') as log_file:
+                        log_file.write(f"Commit: {commit_hash}\n")
+                        log_file.write(f"Date: {commit_date.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                        log_file.write(f"Message: {commit_message}\n")
 
-            # Stage, Commit, Push
-            commit_message = f"{commit_message}"
-            parent_repo.git.add(os.path.join(nightly_folder, '*'))
-            parent_repo.index.commit(commit_message)
-            origin.push(refspec=f"{PARENT_BRANCH}:{PARENT_BRANCH}")
-            log_status(f"Pushed new commit to parent repo with message: {commit_message}")
+                    # Commit and push changes to parent repository
+                    cloned_repo.git.add(nightly_folder)
+                    cloned_repo.index.commit(f"Add commit logs for {len(new_commits)} new commits.")
+                    origin.push(refspec=f"{PARENT_BRANCH}:{PARENT_BRANCH}")
+                    cursor.execute('INSERT INTO processed_commits (commit_hash) VALUES (?)', (commit_hash,))
+                    conn.commit()
 
-            # Update last processed commit JSON
-            with open(last_processed_commit_file, 'w') as f:
-                json.dump({'commit_hash': new_commits[-1]}, f)
-            last_commit_hash = new_commits[-1]
+                    log_status(f"Processed commit {commit_hash}.")
 
-        else:
-            log_status("No new commits found.")
+        time.sleep(60)  # Sleep for 10 minutes before checking for changes
 
     except Exception as e:
-        log_status(f"Error: {str(e)}")
-
-    # Sleep for 60 seconds
-    time.sleep(60)
+        log_status(f"An error occurred: {e}")
+        time.sleep(60)
