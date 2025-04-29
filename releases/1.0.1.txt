@@ -1,0 +1,24 @@
+01/07/2025 - v1.0.1 changelogs:
+
+- Siegeteam fixes for Lego Star Wars eras.
+- gfx/sup_icon fixes for a several misplaced or mishandled icons.
+- ForceInfo additions, icon & sound replacements for protect/absorb for certain classes.
+>> sound/forcesup/protect.mp3 & protectloop.wav
+> Protect == Officer Shroud // gfx/mp/sup_ofc_shroud.tga
+> Absorb == Nullify Force // gfx/mp/sup_vet_nullify.tga
+> These abilities use MB_ATT_LIGHTS_BEACON.
+
+- Incremental movement speed adjustments to a few classes, namely Veteran/Vanguard & Imperial Shock trooper.
+- Default soldier droid HP reduced by 5 points for overall balance, for Phase I & Phase II units. Relying more upon armor, and group tactics.
+- Some eras now have officer & veteran abilities for their units, that previously missed them in v1.0:
+> Zakuul Knight can now use stronger variant of Officer Shroud, given protect 3.
+> Veteran Skytrooper may now use Nullify Force, paired with their jetpack fuel.
+> Dathomiir Zombie Officer may now use Officer Shroud, in undead survival eras.
+> Vong Head Grunt can now use Officer Shroud, and Nullify Force both.
+
+- Blaster VFX fixes for certain clone wars classes.
+- Jetpack wrist rocket SBD animation fixes.
+- Other minor bugfixes and optimizations.
+
+- Rock the Era & Rock the Bonus has extensive overhaul and changes to the backend, better serving the player experience.
+TY to ACHUTA/Mantlar!

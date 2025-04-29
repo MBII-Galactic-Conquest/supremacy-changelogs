@@ -1,0 +1,12 @@
+- Fix to supremacy observer siegeteams.
+- levelshots/gc_intermission is no longer progressive, now is baseline jpeg.
+- GCW shocktrooper classes no longer have red muzzle effect when using their stun EE3 weapon.
+- Complete soldier class weapons rework, you may point buy between blaster carbine or reskinned ee4 rifle without alt shot.
+- B1 droid special units now similarly share the buffs given to default droids, ANTI MT1, magnetic plating, and blast armour.
+- Both CW phases now use the EE4 weapons migration, blobs are now used by longrifle class, classnumberlimit increased to 4.
+- Phase I & II Clone Jet Trooper now has 4 rocket shots compared to the 7 previous.
+- Droid spy class has fixed cloak duration now, forcepool 25->50.
+- Preox Morlana Corpos mdl by unguided added to Andor Era, for early imperials as soldier skin.
+- New Republic models added to the new republic eras, 6,7,13, using .mdls by unguided.
+- Rebel Partisan models from unguided added to first order era.
+- Z6 rotary cannon .mdl fixes.

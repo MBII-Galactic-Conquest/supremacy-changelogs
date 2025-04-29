@@ -1,0 +1,8 @@
+A minor hotfix where rage points should regen correctly. The logic is different, whereas rage works the opposite of the other resource meters and how they function. All values are correctly inverted now and special units should regenerate rage for their abilities correctly.
+
+Values added, or modified:
+- resourceRegenAmount 1
+- resourceRegenRate 1000
+- forceregen 1 -> 0.1
+
+Additional changes to the points database systems introduces the tickets reinforcements system, by ViceDice, which triggers a Rock the Bonus vote when the opposing team is depleted of all tickets, and defeated.

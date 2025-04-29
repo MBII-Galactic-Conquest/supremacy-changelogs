@@ -1,0 +1,172 @@
+List of All Eras:
+
+
+
+- Galactic Civil War
+
+- Clone Wars (Phase 1 & 2)
+
+- KOTOR Mandalorian Wars
+
+- KOTOR Jedi Civil War
+
+- Darth Malgus' Wars
+
+- Thrawn's Ascendancy
+
+- Fall of the Black Sun
+
+- Rise of the First Order
+
+- KOTOR Dark Wars
+
+- Rise of the Empire (Andor Era)
+
+- Lego Star Wars (silly filler)
+
+- Shadows of Dathomiir (halloween, undead survival)
+
+- Yuuzhan Vong Wars
+
+- Sith-Imperial War (Fel & Krayt empire)
+
+- Conquest of the Eternal Throne (SWTOR)
+
+- Conquest of the Infinite Empire (KOTOR)
+
+
+
+List of all Classes, with custom icons for each of them, in all eras:
+
+
+
+- Soldier (impacted by bonuses)
+
+- Heavy Rocket Trooper (special unit)
+
+- Heavy Machine Gunner (special unit)
+
+- Jetpack Trooper (special unit)
+
+- Flame Trooper (special unit)
+
+- Veteran/Vanguard (special unit)
+
+- Medic (heals teammates) (team heal w/ rage bar)
+
+- Engineer (provides ammo & armor heal) (team energize w/ rage bar)
+
+- Officer (special unit) (lights_beacon protection w/ rage bar)
+
+- Spy (special unit)
+
+- Hero (leader)
+
+- Bounty Hunter (leader)
+
+- Jedi Adept (special unit)
+
+- Sith Acolyte (special unit)
+
+- Jedi Duelist (leader)
+
+- Jedi Sorcerer (leader)
+
+- Sith Duelist (leader)
+
+- Sith Sorcerer (leader)
+
+
+
+The following combat bonuses will be available for Supremacy:
+
+
+
+Two defensive bonuses may be paired.
+
+Only one offensive bonus may be used.
+
+
+
+Using an offensive bonus prevents use of defensive ones, & vice versa.
+
+
+
+- Supplies bonus (D) - all soldiers have +100 ammo, +50 magazine, +1 frag, access to engineer class.
+
+- Bacta/Kolto bonus (D) - all soldiers have passive health regen, +10hp, a small bacta tank, access to medic class.
+
+- Garrison bonus (D) - allows special units in the match, soldier lives increased by +1
+
+- Combat Shielding bonus (D) - allows all soldiers to purchase shield recharge, +10ar.
+
+- Energy Boost bonus (D) - allows all soldiers the ability to arc roll & use stamina. kotor eras get vibrosword defense.
+
+- Enhanced Blasters bonus (O) - gives soldiers a small percentile increase to all damage (5%), pistol 3, and e-11 3 accuracy.
+
+- Generic Leader bonus (O) - allows stronger generic leaders in the match, such as heroes, bounty hunters, jedi/sith duelists & sorcs.
+
+- Named Leader bonus (O) - used to bring extremely powerful, named leaders from the Star Wars universe into the fray.
+
+- MVP bonus (O) - used in accordance with the later planned scrim Galactic Conquest & Campaign aspects of the gamemode.
+
+
+
+Defensive ones may be combined, sharing their bonuses in the following .mbch format:
+
+
+
+- bg - Bacta/Kolto & Garrison
+
+- bs - Bacta/Kolto & Supplies
+
+- bc - Bacta/Kolto & Combat Shielding
+
+- sg - Supplies & Garrison
+
+- cg - Combat Shielding & Garrison
+
+- cs - Combat Shielding & Supplies
+
+- eng - Energy Boost & Garrison
+
+- ens - Energy Boost & Supplies
+
+- enb - Energy Boost & Bacta/Kolto
+
+- enc - Energy Boost & Combat Shielding
+
+
+
+
+
+Class Specific Highlights & Synergies:
+
+
+
+- Veterans/Vanguards can now dash [CS1], and use rage points for team absorb.
+
+- Veterans/Vanguards may choose between T21 or A280, skinned as their era specific weapon.
+
+- Officers can now dash [CS1]. As well as use rage points for dodge [CS2] and team protect.
+They also now have fast firing pistol 3, and a lot of gadgets to compensate for one life.
+
+- Medic Class can now use rage points to Team Heal, as well as flip kick.
+
+- Engineer Class can now use rage points to Team Energize.
+
+- Jetpack troopers, all with era specific models, thanks to our modeling team!
+
+- All default soldier classes, impacted by all bonuses, have point buy to interact with these systems.
+
+
+
+
+
+The point of these class synergies is to introduce a new way of tactics and gameplay to ordinary gunner play. While some eras introduce weaker Jedi and Sith into the field, the emphasis is on gunner play now more than ever, with interesting ways to bring them together. The war of the generic soldier class, from open, but intricately better!
+
+
+Extensive serverside python scripting:
+
+
+- Rock the Era & Rock the Bonus systems are being actively developed. While they are in a current standalone working state, a lot of backend service is being done to address a lot of facial uplifting and visual changes, to make it look more closer to Alliedmodders RTV. Plans are being made to eventually tie the team's individual fraglimit & round wins/losses to a local SQL database, to make K/D/A surprisingly matter in ways that are fun and casual, and surpass the round based nature of objectives. These scripts will remain closed source.

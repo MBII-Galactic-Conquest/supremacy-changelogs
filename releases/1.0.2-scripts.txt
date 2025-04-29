@@ -1,0 +1,58 @@
+Rock the Era systems for the MBII Supremacy servers now feature the credit purchase points database & reinforcements tickets system:
+
+** A gamemode where the gameplay focus is finally on more than the round based objectives themselves. **
+
+The opus of play is now centered on bettering your team. Players come and go, and overall contribute to a constant tug of war, empowering your team by wisely spending your teams balance on stronger classes to sharpen your edge against the enemy team.
+
+- !points or !pts = view both teams credits, global
+- !tickets or !tkts = view both teams reinforcements remaining, global
+
+C2LWTnk.png
+
+Average of 3-4 points are given per kill for your team.
+All reinforcements tickets and points are automatically shown after 10 kills.
+All teams start with 500 credits per era vote, and 50 reinforcements tickets per map.
+Enemy Team depleted of all their tickets generate 100 credits for the winning team, 50 for the losing team.
+Either team depleted of all their tickets generate a Rock the Bonus vote, which may be followed up by Rock the Vote.
+Garrison Bonus provides +15 extra reinforcements tickets per map for your team.
+
+Vote !6 to abstain in bonus voting if your team wishes to preserve their credits, or simply don't vote.
+Default siegeteams are provided when your team cannot afford the below bonuses.
+
+
+
+BONUS COSTS
+
+
+Defensive
+
+Supplies - 300
+Bacta - 200
+Garrison - 300
+Combat Shielding - 200
+Energy Boost - 300
+
+Defensive Combinations
+
+Bacta & Garrison - 500
+Bacta & Supplies - 500
+Bacta & Combat Shielding - 400
+Bacta & Energy Boost - 500
+Energy Boost & Garrison - 600
+Energy Boost & Supplies - 600
+Energy Boost & Combat Shielding - 500
+Combat Shielding & Supplies - 500
+Combat Shielding & Garrison - 500
+Supplies & Garrison - 600
+
+Offensive
+
+Enhanced Blasters - 200
+Generic Leader - 500
+Named Leader - 1000
+
+
+- Made by ViceDice
+
+
+Any bugs or immediate problems we encounter will endeavored to be fixed ASAP.

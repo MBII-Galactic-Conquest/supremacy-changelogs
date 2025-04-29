@@ -1,0 +1,205 @@
+Sandbox -
+
+grenade trails & alt hitmarkers .pk3s
+
+
+
+'Goose' Goosto -
+
+FA design ideas, power-up suggestions
+
+
+
+Junebug -
+
+ERA design, power-ups design, GC lead testing (past), scrim ruleset work (open rulebook)
+
+
+
+Torlo50 -
+
+ERA design, FA design and ideas, kotor eras and galactic civil war
+
+
+
+FrenZy -
+
+campaignrotation scripts, early development blessing, map assistance, FA debugging
+
+
+
+Arron Dominion -
+
+programming, licensing, open era design, imperial remnants era design
+
+
+
+John (.gcj) -
+
+FA design, core team, development direction, FA file debugging
+
+
+
+Bob Billy -
+
+FA kotor lore direction, fa suggestions, kotor era design, named leaders
+
+
+
+Unguided -
+
+FA kotor lore direction, named leaders, kotor era models, alien stormtroopers
+
+
+
+OCD2 -
+
+FA design and ideas, kitbashing, assistance with jetpack troopers
+
+
+
+GamerChad42 -
+
+custom unique sniper vfx for rifles & work on the DoM/BH pack
+
+
+
+ACHUTA/mantlar -
+
+scripter team, rock the era & bonus systems
+
+
+
+Amberlykse -
+
+scripter team, assistance with python and java scripting
+
+
+
+Lucious/drillerslegacy -
+
+supremacy server, campaign test server
+
+
+
+Brawler -
+
+supremacy auto updater
+
+
+
+TehPandemic -
+
+battlefront sound replacer audio
+
+
+
+Noodle -
+
+zombies and witches of dathomir models
+
+
+
+Kitsu-Nesh'Kaa -
+
+modeler team, kitbashing custom model content, darktroopers, jetpack troopers
+
+
+
+LwKill -
+
+acclamator bridge for gc_intermission, permission to modify
+
+
+
+Jeff -
+
+yuuzhan vong models
+
+eternal empire models
+
+
+
+Keto -
+
+yuuzhan vong models
+
+
+
+Legacy RP community -
+
+imperial knight models
+
+
+
+Nodlewaffle -
+
+alien stormtrooper variants for fel empire
+
+
+
+Jaktan -
+
+assistance with entmodding maps
+
+
+
+MarsMarshall -
+
+swtor republic soldier model
+
+
+
+Psyk0Sith -
+
+eg-5 jedi hunter droid
+
+
+
+Omega -
+
+T800 series terminator model
+
+
+
+ViceDice -
+
+rock the era systems work
+
+
+
+Mako?Rehaps -
+
+ai & python conquest map generation
+
+
+
+DarthStiv -
+
+Rakatan playermodels
+
+
+
+Leonss-
+
+supremacy auto updater
+
+
+
+Xjiro-
+
+custom galaxy map web API
+
+github release tracker
+
+
+
+TheEffacer-
+
+imperial commando redled skin
+
+
+
+DarthValeria-
+
+TOR sith droideka

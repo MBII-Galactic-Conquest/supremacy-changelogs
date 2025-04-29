@@ -1,0 +1,17 @@
+- Force sense adjustments for generic leader sorcerers, they now have sense 3.
+- Imperial fel knight twi'lek now has proper modeldata sounds.
+- Rakatans now have the force sense for their jedi classes that they direly lacked.
+- Rakatans no longer regenerate rage, due to balancing of their dark rage mechanic.
+- A few minor bug fixes with siegeteam loading for rakatan units.
+
+- Officer rage pool increased from 25-> 50, to accommodate for use of dodge.
+- Sith Officers in eras 4,9 swap skins with the veteran class, the veteran now uses the elite skin.
+- Republic Officer skins are now implemented for republic sides in eras 3,4,9, as I overlooked them having being actual skins for sith officers.
+
+- Indentation fixes in some .mbchs caused by bulk search and replace, which inaccurately removed attributes for a small number of classes.
+- Death Troopers in thrawn's ascendancy era should no longer be able to jump and levitate.
+- Chiss imperial officer should now use the proper skin in the thrawn's ascendancy era.
+
+- Heavy Machine Gunners should now be able to dex roll properly.
+- sound/forcesup/barrage & synergize have their soundfile dB raised as it was difficult to hear them in the game prior.
+- Some minor gfx/sup_icon fixes.

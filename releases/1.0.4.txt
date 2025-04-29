@@ -1,0 +1,31 @@
+- New supremacy observer siegeteams with QR code uishaders, so players can ease of access join the discord. TY to ViceDice.
+- New use of echobase stormtrooper2 skins for GCW and thrawns ascendancy eras.
+- New class specials for sorcerer class, CS3 being Team Heal, and CS4 Team Energize.
+- GCW shocktrooper is reworked, now has fury,1 to use jetpack, and use lightning,1. meanwhile now having a HELD_PULSE stunning EE3 primary.
+- GCW shocktrooper now has correct classNumberLimit adjustments, set to 2.
+- Correct darktrooper model, darktrooper_p0 is now used for shock troopers, retiring the previous by Kit'su-Nesh'kaa.
+- Default Droids in eras 2,15,17 are now buffed, with MT immunity 1, +5 hp (25->30), magnetic plating, and blast armour.
+- Changes impactFX for malgus rocket droideka to not be so much of an eye sore.
+- Spy class now has bothan incinerator weapon, that evaporates enemies with HELD_DISRUPTIFY when killed.
+- EG-5 jedi hunter droid now has repulsor glove for push,1. Further tweaks and balancing was done to this class. Infi-flying bug also fixed.
+- Adds rcon sounds to be used with the godfinger script extension system, for purposes of informing others to vote. (Q3 announcer).
+- classNumberLimit 3->2 reduction for field marshall officer in mandalorian wars era.
+- Heavy Rocketeers when the supply & garrison bonus is used, now have a single EMP nade to use for an EMP rocket.
+- Flame trooper wrist laser moved to class special 2.
+- Flame troopers now have CFL_EXTRAFLAMEDAMAGE.
+- Phase II Clone Jetpack Trooper now has Blast Armour.
+- Jaden added as a generic jedi skin.
+- Battle droid engineers no longer move so fast.
+- BX1 droid can now dash properly (CS1).
+- Jetpack SBD with wrist rocket now has doubled forceregen.
+- Missing vibroswords in infinite empire eras have been restored.
+- Vong enhanced blasters grunt should not have pistol 3, it has been subsequently removed.
+- Shadows of Dathomiir era has proper teamconfig fixes that prevented it's use with server scripts prior.
+- New republictrooper model by unguided and noob. Previous was retired or removed entirely.
+- Clonerc2 model folder should now only have the redled skin & textures by TheEffacer.
+- All instances of quicktoss are now replaced with quickthrow.
+- Imperial Fel Knight modeldata sound fixes.
+- gfx/sup_icon additions.
+
+The following models were removed, as they are already upstream in MBII assets:
+- clonerc2, nightsister, stormie_jet, manda_et_jet, sithtrooper_tor_jet

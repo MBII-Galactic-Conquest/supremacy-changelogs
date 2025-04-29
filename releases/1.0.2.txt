@@ -1,0 +1,51 @@
+- All special unit classes have a forceregen of 1, excluding engineer, to slowly build up use of rage abilities.
+- All officers and veterans/vanguards can now use PUSH 1 with rage points, with the Repulsor Glove ability.
+- Heavy Machine Gunner can now dex roll & use dodge with rage points, as well as use Force Rage 3 with the "Laser Barrage" ability.
+- Heavy Machine Gunner now has blast armour, to compensate for slow movement with minigun and face tanking rockets and nades.
+- Laser Barrage Ability for Heavy Machine Gunners has color-specific UI icons based on if their class uses blue lasers, or not.
+- Medic Class can now use Team Heal called "Team Bacta Mist" // "Team Kolto Mist" by era, with it's own unique sound when used.
+- Engineer Class can now use "Team Synergize" with a custom sound effect when used, to synergize rage points with other classes.
+- Engineers may now use CFL_STATVIEWER flags, which was overlooked, and now can view other player stats when repairing armor.
+- Engineer class has forceregen 0.5, half of the other classes, due to the power of the Team Synergize ability.
+
+- Imperial ARC added to Andor Era as officer skin, with custom gfx/sup_icons.
+- Intermission lobby characters no longer take any knockback, which was an annoyance without dealing any damage.
+
+Various ForceInfo() art UI replacements:
+- gfx/mp/sup_repulsor_glove.tga > 1
+- gfx/mp/sup_laser_barrage.tga > 2
+- gfx/mp/sup_laser_barrage_b.tga > 3
+- gfx/mp/sup_med_heal.tga > 4
+- gfx/mp/sup_team_synergize.tga > 5
+
+kmpxVrQ.png xXOFJ38.png tgB4bXX.png PThYRMT.png 3e91Wpi.png
+1 | 2 | 3 | 4 | 5
+
+Sounds Added:
+- sound/forcesup/barrage.mp3
+- sound/forcesup/synergize.mp3
+
+
+- Jedi Adepts/Padawans added to the below eras:
+- Mandalorian Wars
+- Clone Wars, Phase I
+- Clone Wars, Phase II
+
+- Various gfx/sup_icon fixes.
+- Various teamconfig adjustments and fixes.
+- SS_STRONG style given to officers with vibroswords who lacked it.
+- Reduced number of sith adept extralives in eras 4,5,9,14,15 from 2->1.
+- Wookiees with Vibroswords in KOTOR eras now have MB_ATT_FP_SABER_DEFENSE,2.
+- All KOTOR officers on the republic side have burst weapons again & correct rateofFire adjustments to fit the rest.
+- In eras where enemy dekas exist, the opposite corresponding team's Heavy Rocketeers now has EMP nades to use against them.
+
+Mandalorian Wars era has balancing to compensate for lack of jedi classes:
+- Neo Crusader Medic gets the ability to force drain to heal itself.
+- Neo Crusader Field Marshal (officer) classNumberLimit becomes 2->3.
+- Force regen 2 to all special units, compared over the republic side.
+
+Rock the Era & Rock the Bonus systems have the following developments:
+- Discord bot support, activities are logged and users may do !admin to acquire an admins presence.
+- Various RTE/RTV tweaks, balancing, and adjustments by ACHUTA.
+- Points Purchasing system is very well underway by ViceDice, nearly finished, and will release on a separate workload than these files.
+- When utilized, K/D/A will matter in ways that is surprisingly fun and exciting. Players will have to participate in ongoing rounds and kills tracked generate points for your whole team. Those points are then used to purchase bonuses to strengthen your team in the upcoming next battle.

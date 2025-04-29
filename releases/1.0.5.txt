@@ -1,0 +1,72 @@
+New
+- Anim overrides for most soldier weapons & classes.
+- Sniper Class for the Garrison bonus, with two shot lowdmg proj, high damaging fast P3, with one life..
+- Sniper Class can dash, dodge, bounty hunter kick, and use short bursts of speed, offering agile play..
+- Custom ForceInfo with stamina & heartbeat sounds for sniper speed replacements..
+- Bothan Incinerator for spy classes, now fully functional /as/ intended, can disintegrate enemies up close, small magazine.
+- Veterans & Vanguards now have 5%+ damage increase, to compete with use of soldier EE4.
+- Heavy MG now has a pistol 3 that is 'explosive' and can knock down targets, ignoring jedi block.
+- Alt Snipe is now enabled for Enhanced Blasters bonus soldiers using their WP_EE4.
+- Heavy MG class can now stagger opponents using their minigun.
+- Engineers now have access to a fusion cutter weapon.
+- Engineers can now stagger enemies with their shotgun.
+- Null.efx for bothan incinerator weapon...
+- gfx/mp/sup_sni_deftness.tga added...
+
+Changed
+- Heavy MGs now have +10 HP && +5 AR.
+- Heavy MGs have 10% rate of fire reduction (negligible), while taking 5% less damage, and doing 5% more.
+- GCW shocktrooper now has a few nerfs, particularly to clip size for their shock weapon (100->50) & regen rates (2->1)...
+- Rebel Alliance & New Republic medics and engineers now use the pilot_rgb model as the model/skin they originally used has been removed.
+- All instances of Quarren_Forest has been replaced with the use of Quarren_Scarif, as the skin has been removed...
+- All WP_BLASTER instances for Rebel Alliance & New Republic soldiers now use DH-17.
+- Veteran & Vanguard movement speed has been reduced, by 0.7 -> 0.65.
+- Officer speed has been similarly reduced in movement speed, by 0.8 -> 0.75.
+- Wookiee classes are now tweaked for movement speed reductions.
+- Phase I Clone Jet Trooper now has blast armour...
+
+Fixed
+- Additional duplicate weaponinfo from batch & replace is now removed.
+(Previously wasn't a problem, but did take up the bytesize limit in .mbch files...)
+- Sounds to be invoked by RCON now have correct sample rates & are no longer stereo...
+- Missing WP_EE4 weaponinfo for some of the neo crusaders soldier classes in the mandalorian wars era.
+- Random Det Pack removed from a few clone units, presumably used older Pre-R20 weapon info...
+- All Phase II clone blaster weapons have correct blue missile effects, and corrected altflashsounds...
+- Quick Throw (2) alt nade fixes for all classes that originally was intended to utilize it.
+- Generic Bounty Hunter & Hero classes now have correct class special info.
+- Duplicate Forcepools for Veterans & Vanguards in multiple eras...
+- Model Corrections for rebel_commando alien skin changes...
+- Missing grenade from black sun veteran thugs...
+
+Campaign Rotations from RC1-RC2 are fully functional and restored, with the use of the godfinger system, ...
+However, the cvars are old and it is often broken, looping the first map of the campaign rotation,
+TY to ViceDice & ACHUTA & FrenZY for helping with use of wayback machine, and with plugin integration for an archaic system...
+
+BONUS PRICE CHANGES
+
+$$ TEAM CREDITS $$
+
+Supplies - 100
+Bacta - 100
+Garrison - 100
+Energy Boost - 100
+Combat Shielding - 100
+
+Bacta & Garrison - 200
+Bacta & Supplies - 200
+Bacta & Combat Shielding - 200
+Combat Shielding & Garrison - 200
+Combat Shielding & Supplies - 200
+Energy Boost & Garrison - 200
+Energy Boost & Supplies - 200
+Energy Boost & Bacta - 200
+Energy Boost & Combat Shielding - 200
+Supplies & Garrison - 200
+
+Enhanced Blasters - 300
+Generic Leader - 500
+
+Named Leader (WIP) - 1000
+
+https://youtu.be/7ReYwFrJs2M
+https://youtu.be/tfFnCL8F4SI
