@@ -48,7 +48,7 @@ with open(ENV_FILE, 'r') as f:
             env_vars[key] = value
 
 SSH_USER = env_vars['SSH_USER']
-SSH_KEY_PATH = os.getenv('SSH_KEY')
+SSH_KEY_PATH = env_vars['SSH_KEY']
 PRIVATE_REPO_OWNER = env_vars['PRIVATE_REPO_OWNER']
 PRIVATE_REPO_NAME = env_vars['PRIVATE_REPO_NAME']
 PRIVATE_BRANCH = env_vars['PRIVATE_BRANCH']
