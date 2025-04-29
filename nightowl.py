@@ -257,7 +257,7 @@ while True:
                 filepath = os.path.join(nightly_folder, filename)
 
                 if not os.path.exists(filepath):
-                    # Get the actual commit message for the log file
+                    # Get the actual commit message for the log file from the private repo
                     cmd = ['git', 'show', '-s', '--format=%s', commit_hash]
                     env = os.environ.copy()
                     env['GIT_SSH_COMMAND'] = f'ssh -i {SSH_KEY_PATH} -o IdentitiesOnly=yes -o StrictHostKeyChecking=no'
@@ -273,11 +273,11 @@ while True:
                 conn.commit()
 
             # Stage, Commit, Push
+            commit_message = f"{commit_message}"
             parent_repo.git.add(os.path.join(nightly_folder, '*'))
-            commit_message = f"Adding {len(new_commits)} commit .log files"
             parent_repo.index.commit(commit_message)
             origin.push(refspec=f"{PARENT_BRANCH}:{PARENT_BRANCH}")
-            log_status("Pushed new commits to parent repo.")
+            log_status(f"Pushed new commit to parent repo with message: {commit_message}")
 
             # Update last processed commit JSON
             with open(last_processed_commit_file, 'w') as f:
