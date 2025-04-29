@@ -10,11 +10,14 @@ sshkey/*
 !sshkey/.keep
 
 !nightly/*.log
-!logs/*.log
+
+logs/*
 
 tmp/*
 temp/*
 temporary/*
+
+test.cmd
 
 __pycache__/*
 **/__pycache__/

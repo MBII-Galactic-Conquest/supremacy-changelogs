@@ -25,7 +25,7 @@ ENV_FILE = 'nightowl.env'
 # Template .env if missing
 default_env = """# Configuration
 SSH_USER=git
-SSH_KEY_PATH=sshkey/
+SSH_KEY=placeholder
 PRIVATE_REPO_OWNER=placeholder
 PRIVATE_REPO_NAME=placeholder
 PRIVATE_BRANCH=placeholder
@@ -48,11 +48,13 @@ with open(ENV_FILE, 'r') as f:
             env_vars[key] = value
 
 SSH_USER = env_vars['SSH_USER']
-SSH_KEY_PATH = os.path.expanduser(env_vars['SSH_KEY_PATH'])  # Now points to folder
+SSH_KEY_PATH = os.getenv('SSH_KEY')
 PRIVATE_REPO_OWNER = env_vars['PRIVATE_REPO_OWNER']
 PRIVATE_REPO_NAME = env_vars['PRIVATE_REPO_NAME']
 PRIVATE_BRANCH = env_vars['PRIVATE_BRANCH']
 PARENT_BRANCH = env_vars['PARENT_BRANCH']
+
+PRIVATE_REPO_URL = f"git@github.com:{PRIVATE_REPO_OWNER}/{PRIVATE_REPO_NAME}.git"
 
 # ---------- CHECK FOR PLACEHOLDERS IN .env ----------
 
@@ -60,22 +62,6 @@ for key, value in env_vars.items():
     if "Placeholder" in value:
         print(f"Error: Placeholder detected in {ENV_FILE}. Please replace the placeholders with valid values.")
         exit(1)
-
-# ---------- CHECK FOR SSH KEY IN FOLDER ----------
-
-def find_ssh_key(directory):
-    """Find the first valid private key file in the given directory."""
-    for filename in os.listdir(directory):
-        if filename.endswith('.rsa') or filename.endswith('.pem') or filename.endswith('.key'):
-            return os.path.join(directory, filename)
-    return None
-
-# Try to find a valid SSH key in the folder
-SSH_KEY_PATH = find_ssh_key(SSH_KEY_PATH)
-
-if not SSH_KEY_PATH:
-    print("Error: No SSH key found in the specified directory. Please add an SSH key and rerun the script.")
-    exit(1)  # Exit the script with an error code
 
 # ---------- DATABASE SETUP ----------
 
